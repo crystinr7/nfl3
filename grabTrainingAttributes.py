@@ -3,7 +3,7 @@ import csv
 from bs4 import BeautifulSoup
 import main
 
-stats = []
+
 
 # LISTS FOR PROGRAM
 players = []
@@ -30,26 +30,21 @@ points = []
 less_likely_to_lose = []
 train_team_1_list = []
 train_team_2_list = []
-##teamnames = []
+
+train_stats = []
 
 
 
-
-teamname = "MASTER"
-
-
-list = main.masterlist()
-
-
-def createTrainingCSV():
-    with open('trainingdata2.csv', 'w') as c:
+def createTrainingCSV(team):
+    with open(team, 'w') as c:
         writer = csv.writer(c, delimiter=' ',
                             quotechar=',', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow("Training Data Team 2 win")
+        writer.writerow("Training Data")
 
 
-def appendCSV():
-    with open("trainingdata2.csv", "a") as f:
+
+def appendCSV(team):
+    with open(team, "a") as f:
         wr = csv.writer(f)
         if winning_team() == 1:
             wr.writerow(train_team_1_list)
@@ -72,33 +67,29 @@ def yearstatsForTeam2WIN():
 
 # NAME OF EACH TEAM
 def team1():
-    return stats[0]
+    return train_stats[0]
 
 
 def team2():
-    return stats[6]
+    return train_stats[6]
 
 
 # RETURNS WINNING TEAM FOR THAT GAME
 def winning_team():
-    if float(stats[5]) > float(stats[11]):
+    if float(train_stats[5]) > float(train_stats[11]):
         return 1
     else:
         return 2
 
 
 
-
-
-
-
 def train_attr1():
     # Grabs first quarter points
-    if float(stats[1]) > float(stats[7]):
+    if float(train_stats[1]) > float(train_stats[7]):
 
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[1]) == float(stats[7]):
+    elif float(train_stats[1]) == float(train_stats[7]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -108,10 +99,10 @@ def train_attr1():
 
 def train_attr2():
     # Grabs second quarter points
-    if float(stats[2]) > float(stats[8]):
+    if float(train_stats[2]) > float(train_stats[8]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[2]) == float(stats[8]):
+    elif float(train_stats[2]) == float(train_stats[8]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -121,10 +112,10 @@ def train_attr2():
 
 def train_attr3():
     # Grabs third quarter points
-    if float(stats[3]) > float(stats[9]):
+    if float(train_stats[3]) > float(train_stats[9]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[3]) == float(stats[9]):
+    elif float(train_stats[3]) == float(train_stats[9]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -133,10 +124,10 @@ def train_attr3():
 
 
 def train_attr4():
-    if float(stats[4]) > float(stats[10]):
+    if float(train_stats[4]) > float(train_stats[10]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[4]) == float(stats[10]):
+    elif float(train_stats[4]) == float(train_stats[10]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -146,10 +137,10 @@ def train_attr4():
 
 def train_attr5():
     # Grabs first downs
-    if float(stats[13]) > float(stats[14]):
+    if float(train_stats[13]) > float(train_stats[14]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[13]) == float(stats[14]):
+    elif float(train_stats[13]) == float(train_stats[14]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -159,10 +150,10 @@ def train_attr5():
 
 def train_attr6():
     # Grabs passing first downs
-    if float(stats[16]) > float(stats[17]):
+    if float(train_stats[16]) > float(train_stats[17]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[16]) == float(stats[17]):
+    elif float(train_stats[16]) == float(train_stats[17]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -172,10 +163,10 @@ def train_attr6():
 
 def train_attr7():
     # Grabs rushing first downs
-    if float(stats[19]) > float(stats[20]):
+    if float(train_stats[19]) > float(train_stats[20]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[19]) == float(stats[20]):
+    elif float(train_stats[19]) == float(train_stats[20]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -185,10 +176,10 @@ def train_attr7():
 
 def train_attr8():
     # Grabs total yards
-    if float(stats[34]) > float(stats[35]):
+    if float(train_stats[34]) > float(train_stats[35]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[34]) == float(stats[35]):
+    elif float(train_stats[34]) == float(train_stats[35]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -198,10 +189,10 @@ def train_attr8():
 
 def train_attr9():
     # Grabs yards per play
-    if float(stats[40]) > float(stats[41]):
+    if float(train_stats[40]) > float(train_stats[41]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[40]) == float(stats[41]):
+    elif float(train_stats[40]) == float(train_stats[41]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -211,10 +202,10 @@ def train_attr9():
 
 def train_attr10():
     # Grabs passing yards
-    if float(stats[43]) > float(stats[44]):
+    if float(train_stats[43]) > float(train_stats[44]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[43]) == float(stats[44]):
+    elif float(train_stats[43]) == float(train_stats[44]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -224,10 +215,10 @@ def train_attr10():
 
 def train_attr11():
     # grabs yards per pass
-    if float(stats[49]) > float(stats[50]):
+    if float(train_stats[49]) > float(train_stats[50]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[49]) == float(stats[50]):
+    elif float(train_stats[49]) == float(train_stats[50]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -237,10 +228,10 @@ def train_attr11():
 
 def train_attr12():
     # Grabs rushing yards
-    if float(stats[58]) > float(stats[59]):
+    if float(train_stats[58]) > float(train_stats[59]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[58]) == float(stats[59]):
+    elif float(train_stats[58]) == float(train_stats[59]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -250,10 +241,10 @@ def train_attr12():
 
 def train_attr13():
     # Grabs yards per rush
-    if float(stats[64]) > float(stats[65]):
+    if float(train_stats[64]) > float(train_stats[65]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[64]) == float(stats[65]):
+    elif float(train_stats[64]) == float(train_stats[65]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -263,10 +254,10 @@ def train_attr13():
 
 def train_attr14():
     # Grabs turnovers
-    if float(stats[73]) > float(stats[74]):
+    if float(train_stats[73]) > float(train_stats[74]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-    elif float(stats[73]) == float(stats[74]):
+    elif float(train_stats[73]) == float(train_stats[74]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
     else:
@@ -276,8 +267,8 @@ def train_attr14():
 
 def train_attr15():
     # Grabs possession minutes
-    x = stats[85].split(":")
-    y = stats[86].split(":")
+    x = train_stats[85].split(":")
+    y = train_stats[86].split(":")
     if float(x[0]) > float(y[0]):
         train_team_1_list.append(1)
         train_team_2_list.append(0)
@@ -321,24 +312,53 @@ def prob_of_win():
 def prob_of_lose():
     return 0.5
 
+def bulk():
+    #teamname = "MASTER"
+    team = 'trainingdata1.csv'
 
-createTrainingCSV()
+    list = main.masterlist()
+    createTrainingCSV(team)
 
-#teamname1()
-for item in list:
+    for item in list:
 
-    html = requests.get(item).text
-    soup = BeautifulSoup(html, 'html5lib')
-    # GRAB ALL STAT INFO
-    for td_tag in soup.find_all('td'):
-        stat = td_tag.text
-        stats.append(stat)
-        stats = [x.replace('\t', '').replace('\n', '') for x in stats]
-    print(stats)
-    #yearstatsForTeam1WIN()
-    yearstatsForTeam2WIN()
+        html = requests.get(item).text
+        soup = BeautifulSoup(html, 'html5lib')
+        # GRAB ALL STAT INFO
+        for td_tag in soup.find_all('td'):
+            each_stat = td_tag.text
+            train_stats.append(each_stat)
+            stat = [x.replace('\t', '').replace('\n', '') for x in train_stats]
+        print(stat)
+        yearstatsForTeam1WIN()
+        #yearstatsForTeam2WIN()
 
-    appendCSV()
-    del stats[:]
-    del train_team_1_list[:]
-    del train_team_2_list[:]
+        appendCSV(team)
+        del train_stats[:]
+        del train_team_1_list[:]
+        del train_team_2_list[:]
+        del stat[:]
+
+    team2 = 'trainingdata2.csv'
+
+    list = main.masterlist()
+    createTrainingCSV(team2)
+
+    for item in list:
+
+        html = requests.get(item).text
+        soup = BeautifulSoup(html, 'html5lib')
+        # GRAB ALL STAT INFO
+        for td_tag in soup.find_all('td'):
+            each_stat = td_tag.text
+            train_stats.append(each_stat)
+            stat = [x.replace('\t', '').replace('\n', '') for x in train_stats]
+        print(stat)
+        #yearstatsForTeam1WIN()
+        yearstatsForTeam2WIN()
+
+        appendCSV(team2)
+        del train_stats[:]
+        del train_team_1_list[:]
+        del train_team_2_list[:]
+        del stat[:]
+bulk()

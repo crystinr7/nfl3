@@ -1,8 +1,5 @@
-import main
 import csv
 import functools
-import grabAttributes
-import analyzeAndTrain
 
 indices = []
 numOfAttrs = 15
@@ -11,7 +8,7 @@ notxgivenwin = []
 list = []
 
 
-def getNumOfGames():
+def getNumOfGames(dataset):
     i = 0
     with open(dataset, 'r') as r:
         read = csv.reader(r, delimiter=' ', quotechar=',')
@@ -19,7 +16,8 @@ def getNumOfGames():
             i += 1
     return i
 
-def p_x_y(attr):
+def p_x_y(attr, dataset):
+    numOfGames = getNumOfGames(dataset)
     with open(dataset, 'r') as csvfile:
         next(csvfile)
         read = csv.reader(csvfile, delimiter=' ', quotechar=',')
@@ -66,12 +64,12 @@ def all_indices(value, list):
             break
     return indices
 
-def train():
+def train(dataset):
     answer = []
 
     for i in range(numOfAttrs):
-        xgivenwin.append(p_x_y(i)[0])
-        notxgivenwin.append(p_x_y(i)[1])
+        xgivenwin.append(p_x_y(i, dataset)[0])
+        notxgivenwin.append(p_x_y(i, dataset)[1])
 
     prob_x_win = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, xgivenwin) * prob_of_win()
     prob_not_x_win = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, notxgivenwin) * prob_of_win()
@@ -85,19 +83,19 @@ def train():
 
 
 
-def dataset(num):
-    if num == 0:
-        return "trainingdata1.csv"
-    if num == 1:
-        return "trainingdata2.csv"
 
-dataset = dataset(0)
-numOfGames = getNumOfGames()
-for i in range(numOfAttrs):
-    xgivenwin.append(p_x_y(i)[0])
-    notxgivenwin.append(p_x_y(i)[1])
 
-#for row in dataset(0):
+def bulk():
+    dataset1 = "trainingdata1.csv"
 
-#train()
+    for i in range(numOfAttrs):
+        xgivenwin.append(p_x_y(i, dataset1)[0])
+        notxgivenwin.append(p_x_y(i, dataset1)[1])
+
+    dataset2 = "trainingdata1.csv"
+
+    for i in range(numOfAttrs):
+        xgivenwin.append(p_x_y(i, dataset2)[0])
+        notxgivenwin.append(p_x_y(i, dataset2)[1])
+#bulk()
 

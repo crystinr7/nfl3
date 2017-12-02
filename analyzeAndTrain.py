@@ -1,17 +1,16 @@
 import main
 import csv
-import functools
-import grabAttributes
 
-numOfGames = len(main.list())
+
 numOfAttrs = 15
 givenwin = []
 givenloss = []
 list = []
 prob_win = []
 
-def p_x_y(attr):
-    with open(main.teamname()+'data.csv', 'r') as csvfile:
+def p_x_y(attr, team):
+    numOfGames = len(main.list(team))
+    with open(team +'data.csv', 'r') as csvfile:
         next(csvfile)
         read = csv.reader(csvfile, delimiter=' ', quotechar=',')
         given_win = 0
@@ -42,8 +41,9 @@ def p_x_y(attr):
 
     return p_x_y, p_not_x_y
 
-def prob_of_win():
-    if main.teamname() == main.teamname1():
+def prob_of_win(team):
+    numOfGames = len(main.list(team))
+    if team == main.teamname1():
 
         with open(main.teamname1()+'data.csv', 'r') as csvfile:
             next(csvfile)
@@ -58,7 +58,7 @@ def prob_of_win():
                     if '1' in word[-1]:
                         wins += 1
             chances = ((wins / numOfGames) + 0.5) / 2
-            print(chances)
+            #print(chances)
             prob_win.append(chances)
             return (chances)
     else:
@@ -75,10 +75,10 @@ def prob_of_win():
                     if '1' in word[-1]:
                         wins += 1
 
-            print(((wins / numOfGames) + 0.5) / 2)
+            #print(((wins / numOfGames) + 0.5) / 2)
             return (((wins / numOfGames) + 0.5) / 2)
-def prob_of_lose():
-    with open(main.teamname()+'data.csv', 'r') as csvfile:
+"""def prob_of_lose(team):
+    with open(team +'data.csv', 'r') as csvfile:
         next(csvfile)
         read = csv.reader(csvfile, delimiter=' ', quotechar=',')
         wins = 0
@@ -95,20 +95,32 @@ def prob_of_lose():
                     wins += 1
 
         print(((wins/ numOfGames) + 0.5) / 2)
-        return (((wins/ numOfGames) + 0.5) / 2)
+        return (((wins/ numOfGames) + 0.5) / 2)"""
 
 def append_csv():
-    prob_of_win()
+    team1 = main.teamname1()
+    prob_of_win(team=team1)
     for i in range(numOfAttrs):
-        givenwin.append(p_x_y(i)[0])
-    givenwin.append(prob_of_win())
+        givenwin.append(p_x_y(i, team1)[0])
+    givenwin.append(prob_of_win(team1))
         #givenloss.append(p_x_y(i)[1])
-    with open(main.teamname() + "data.csv", "a") as f:
+    with open(team1 + "data.csv", "a") as f:
+
+        wr = csv.writer(f)
+        wr.writerow(givenwin)
+    team2 = main.teamname2()
+    prob_of_win(team=team1)
+    for i in range(numOfAttrs):
+        givenwin.append(p_x_y(i, team2)[0])
+    givenwin.append(prob_of_win(team2))
+        #givenloss.append(p_x_y(i)[1])
+    with open(team2 + "data.csv", "a") as f:
 
         wr = csv.writer(f)
         wr.writerow(givenwin)
     #test.compareAttrs()
-append_csv()
+def bulk():
+    append_csv()
 """def train():
     answer = []
 

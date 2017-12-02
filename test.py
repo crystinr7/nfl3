@@ -1,7 +1,7 @@
-import main
 import train
-import functools
 import numpy as np
+import main
+
 
 answer = []
 last_line = []
@@ -38,9 +38,10 @@ def openCSV(team):
                 team2List.append(item)
         del last_line[:]
 
-compareAttrs()
+
 #print(team1List)
 #print(team2List)
+
 def attrCompare():
     for item in range(len(team1List)):
         if team1List[item] > team2List[item]:
@@ -49,27 +50,10 @@ def attrCompare():
             findAName.append(0)
         else:
             findAName.append(2)
-attrCompare()
-print(findAName)
+
 #print(findAName)
-numOfAttrs = 15
-x_y = train.xgivenwin
-n_x_y = train.notxgivenwin
-#print(x_y)
-#print(n_x_y)
+#print(findAName)
 
-#print(team1List[-1])
-#print(team2List[-1])
-for i in range(numOfAttrs):
-
-    if findAName[i] == 1:
-        finalAttributeNumsT1.append(x_y[i])
-        finalAttributeNumsT2.append(n_x_y[i])
-    elif findAName[i] == 2:
-        finalAttributeNumsT1.append(x_y[i])
-        finalAttributeNumsT2.append(n_x_y[i])
-    else:
-        pass
 #print(finalAttributeNumsT1)
 #print(finalAttributeNumsT2)
 
@@ -91,13 +75,38 @@ def results():
 
     t2 = format(prob_t2, '.8f')
     answer.append(t2)
-    print(answer)
+    #print(answer)
 
-results()
+
 
 def final_answer():
     if answer[0] > answer[1]:
         print("Team : ", main.teamname1(), " should win!")
     else:
         print("Team : ", main.teamname2(), " should win!")
-final_answer()
+
+
+def bulk():
+    compareAttrs()
+    attrCompare()
+    numOfAttrs = 15
+    x_y = train.xgivenwin
+    n_x_y = train.notxgivenwin
+    # print(x_y)
+    # print(n_x_y)
+
+    # print(team1List[-1])
+    # print(team2List[-1])
+    for i in range(numOfAttrs):
+
+        if findAName[i] == 1:
+            finalAttributeNumsT1.append(x_y[i])
+            finalAttributeNumsT2.append(n_x_y[i])
+        elif findAName[i] == 2:
+            finalAttributeNumsT1.append(x_y[i])
+            finalAttributeNumsT2.append(n_x_y[i])
+        else:
+            pass
+    results()
+    final_answer()
+#bulk()

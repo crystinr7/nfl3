@@ -2,8 +2,8 @@ import requests
 import csv
 from bs4 import BeautifulSoup
 import main
-stats = []
 
+stats = []
 # LISTS FOR PROGRAM
 players = []
 totalmax = []
@@ -27,46 +27,38 @@ points = []
 less_likely_to_lose = []
 teamnames = []
 
-def teamname1():
-
-    teamname = main.teamname()
-    teamnames.append(teamname)
-
-list = main.list()
+def teamname():
+    teamnames.append(main.teamname1())
+    teamnames.append(main.teamname2())
 
 def createTrainingCSV():
     with open(main.masterlist() +'data.csv', 'w') as c:
         writer = csv.writer(c, delimiter=' ',
                                 quotechar=',', quoting=csv.QUOTE_MINIMAL)
         writer.writerow(main.masterlist())
-def createCSV():
-    with open(main.teamname()+'data.csv', 'w') as csvfile:
+def createCSV(team):
+    with open(team +'data.csv', 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=' ',
                                 quotechar=',', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(main.teamname())
-def appendCSV():
-    with open(main.teamname()+"data.csv", "a") as f:
+        writer.writerow(team)
+def appendCSV(team):
+    with open(team +"data.csv", "a") as f:
         wr = csv.writer(f)
-        if teamnames[0] == team1():
+        if team == team1():
             wr.writerow(team1list)
         else:
             wr.writerow(team2list)
 
-def teamstats():
-    if teamnames[0] == team1():
+def teamstats(team):
+    if team == team1():
         if len(team1list) == 0:
             team1list.append(team1())
         run_attrs()
-    if teamnames[0] == team2():
+    if team == team2():
         if len(team2list) == 0:
             team2list.append(team2())
         run_attrs()
-def yearstatsForTeam1WIN():
-    if winning_team() == team1():
-        run_training_attrs()
-def yearstatsForTeam2WIN():
-    if winning_team() == team2():
-        run_training_attrs()
+
 
 # NAME OF EACH TEAM
 def team1():
@@ -279,195 +271,6 @@ def run_attrs():
     else:
         team1list.append(0)
         team2list.append(1)
-def train_attr1():
-    # Grabs first quarter points
-    if float(stats[1]) > float(stats[7]):
-
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[1]) == float(stats[7]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr2():
-    # Grabs second quarter points
-    if float(stats[2]) > float(stats[8]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[2]) == float(stats[8]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr3():
-    # Grabs third quarter points
-    if float(stats[3]) > float(stats[9]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[3]) == float(stats[9]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr4():
-    if float(stats[4]) > float(stats[10]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[4]) == float(stats[10]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr5():
-    # Grabs first downs
-    if float(stats[13]) > float(stats[14]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[13]) == float(stats[14]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr6():
-    # Grabs passing first downs
-    if float(stats[16]) > float(stats[17]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[16]) == float(stats[17]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr7():
-    # Grabs rushing first downs
-    if float(stats[19]) > float(stats[20]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[19]) == float(stats[20]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr8():
-    # Grabs total yards
-    if float(stats[34]) > float(stats[35]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[34]) == float(stats[35]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr9():
-    # Grabs yards per play
-    if float(stats[40]) > float(stats[41]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[40]) == float(stats[41]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr10():
-    # Grabs passing yards
-    if float(stats[43]) > float(stats[44]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[43]) == float(stats[44]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr11():
-    # grabs yards per pass
-    if float(stats[49]) > float(stats[50]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[49]) == float(stats[50]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr12():
-    # Grabs rushing yards
-    if float(stats[58]) > float(stats[59]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[58]) == float(stats[59]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr13():
-    # Grabs yards per rush
-    if float(stats[64]) > float(stats[65]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[64]) == float(stats[65]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr14():
-    # Grabs turnovers
-    if float(stats[73]) > float(stats[74]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(stats[73]) == float(stats[74]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def train_attr15():
-    # Grabs possession minutes
-    x = stats[85].split(":")
-    y = stats[86].split(":")
-    if float(x[0]) > float(y[0]):
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    elif float(x[0]) == float(y[0]):
-        train_team_1_list.append(0.5)
-        train_team_2_list.append(0.5)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
-def run_training_attrs():
-    train_attr1()
-    train_attr2()
-    train_attr3()
-    train_attr4()
-    train_attr5()
-    train_attr6()
-    train_attr7()
-    train_attr8()
-    train_attr9()
-    train_attr10()
-    train_attr11()
-    train_attr12()
-    train_attr13()
-    train_attr14()
-    train_attr15()
-    if winning_team() == 1:
-        train_team_1_list.append(1)
-        train_team_2_list.append(0)
-    else:
-        train_team_1_list.append(0)
-        train_team_2_list.append(1)
 
 
 # PROBABILITY OF OUTCOME
@@ -475,24 +278,50 @@ def prob_of_win():
     return 0.5
 def prob_of_lose():
     return 0.5
+def bulk():
+    teamname()
+    team = main.teamname1()
+    #createTrainingCSV()
+    createCSV(team)
 
-#createTrainingCSV()
-createCSV()
-teamname1()
-for item in list:
+    list = main.list(team)
+    for item in list:
 
-    html = requests.get(item).text
-    soup = BeautifulSoup(html, 'html5lib')
-    # GRAB ALL STAT INFO
-    for td_tag in soup.find_all('td'):
-        stat = td_tag.text
-        stats.append(stat)
-        stats = [x.replace('\t', '').replace('\n', '') for x in stats]
-    print(stats)
-    yearstatsForTeam1WIN()
-    yearstatsForTeam2WIN()
-    teamstats()
-    appendCSV()
-    del stats[:]
-    del team1list[:]
-    del team2list[:]
+        html = requests.get(item).text
+        soup = BeautifulSoup(html, 'html5lib')
+        # GRAB ALL STAT INFO
+        for td_tag in soup.find_all('td'):
+            each_stat = td_tag.text
+            stats.append(each_stat)
+            stat = [x.replace('\t', '').replace('\n', '') for x in stats]
+        #print(stat)
+        #yearstatsForTeam1WIN()
+        #yearstatsForTeam2WIN()
+        teamstats(team)
+        appendCSV(team)
+        del stats[:]
+        del team1list[:]
+        del team2list[:]
+        #del stat[:]
+
+    team2 = main.teamname2()
+    createCSV(team2)
+
+    list = main.list(team2)
+    for item in list:
+
+        html = requests.get(item).text
+        soup = BeautifulSoup(html, 'html5lib')
+        # GRAB ALL STAT INFO
+        for td_tag in soup.find_all('td'):
+            each_stat = td_tag.text
+            stats.append(each_stat)
+            stat = [x.replace('\t', '').replace('\n', '') for x in stats]
+        #print(stat)
+        teamstats(team2)
+        appendCSV(team2)
+        del stats[:]
+        del team1list[:]
+        del team2list[:]
+        #del stat[:]
+#bulk()
