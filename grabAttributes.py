@@ -80,7 +80,6 @@ def attr1():
 
     # Grabs first quarter points
     if float(stats[1]) > float(stats[7]):
-
         team1list.append(1)
         team2list.append(0)
     elif float(stats[1]) == float(stats[7]):
@@ -282,7 +281,8 @@ def bulk():
     teamname()
     team = main.teamname1()
     #createTrainingCSV()
-    createCSV(team)
+    #Writes out first line with team name
+    #createCSV(team)
 
     list = main.list(team)
     for item in list:
@@ -294,9 +294,7 @@ def bulk():
             each_stat = td_tag.text
             stats.append(each_stat)
             stat = [x.replace('\t', '').replace('\n', '') for x in stats]
-        #print(stat)
-        #yearstatsForTeam1WIN()
-        #yearstatsForTeam2WIN()
+
         teamstats(team)
         appendCSV(team)
         del stats[:]
@@ -305,7 +303,7 @@ def bulk():
         #del stat[:]
 
     team2 = main.teamname2()
-    createCSV(team2)
+
 
     list = main.list(team2)
     for item in list:
@@ -323,5 +321,5 @@ def bulk():
         del stats[:]
         del team1list[:]
         del team2list[:]
-        #del stat[:]
+
 #bulk()

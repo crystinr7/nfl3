@@ -76,26 +76,29 @@ def train(dataset):
 
     answer.append(prob_x_win)
     answer.append(prob_not_x_win)
-    print(answer)
+    #print(answer)
     return prob_x_win
 
 
 
 
 
-
+def getxgivenwin(dataset):
+    for i in range(numOfAttrs):
+        xgivenwin.append(p_x_y(i, dataset)[0])
+        notxgivenwin.append(p_x_y(i, dataset)[1])
+    #print(xgivenwin)
+    #print(notxgivenwin)
+    return xgivenwin, notxgivenwin
 
 def bulk():
-    dataset1 = "trainingdata1.csv"
+    dataset = "fulltrainingdata.csv"
 
-    for i in range(numOfAttrs):
-        xgivenwin.append(p_x_y(i, dataset1)[0])
-        notxgivenwin.append(p_x_y(i, dataset1)[1])
+    getxgivenwin(dataset)
+    #print(xgivenwin)
+    #dataset2 = "trainingdata2.csv"
 
-    dataset2 = "trainingdata1.csv"
-
-    for i in range(numOfAttrs):
-        xgivenwin.append(p_x_y(i, dataset2)[0])
-        notxgivenwin.append(p_x_y(i, dataset2)[1])
+    #getxgivenwin(dataset2)
 #bulk()
 
+####xgivenwin = contains the training attributes for probability that that feature will lead to a win

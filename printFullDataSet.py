@@ -3,12 +3,13 @@ import csv
 from bs4 import BeautifulSoup
 import main
 
+# LISTS FOR PROGRAM
 
 
+# Attribute lists
 points = []
 train_team_1_list = []
 train_team_2_list = []
-
 train_stats = []
 
 
@@ -16,53 +17,19 @@ def createTrainingCSV(team):
     with open(team, 'w') as c:
         writer = csv.writer(c, delimiter=' ',
                             quotechar=',', quoting=csv.QUOTE_MINIMAL)
-        #writer.writerow("Training Data")
-
-
 
 def appendCSV(team):
     with open(team, "a") as f:
         wr = csv.writer(f)
-        #if winning_team() == 1:
         wr.writerow(train_team_1_list)
-        #else:
         wr.writerow(train_team_2_list)
-
-
-def yearstatsForTeam1WIN():
-    if winning_team() == 1:
-        run_training_attrs()
-
-
-def yearstatsForTeam2WIN():
-    if winning_team() == 2:
-        run_training_attrs()
-
-
-# NAME OF EACH TEAM
-def team1():
-    return train_stats[0]
-
-
-def team2():
-    return train_stats[6]
-
-
-# RETURNS WINNING TEAM FOR THAT GAME
-def winning_team():
-    if float(train_stats[5]) > float(train_stats[11]):
-        return 1
-    else:
-        return 2
 
 def train_attr1():
     # Grabs first quarter points
-
     if float(train_stats[1]) > float(train_stats[7]):
-        print(train_stats)
+
         train_team_1_list.append(1)
         train_team_2_list.append(0)
-
     elif float(train_stats[1]) == float(train_stats[7]):
         train_team_1_list.append(0.5)
         train_team_2_list.append(0.5)
@@ -253,7 +220,11 @@ def train_attr15():
         train_team_1_list.append(0)
         train_team_2_list.append(1)
 
-
+def winning_team():
+    if float(train_stats[5]) > float(train_stats[11]):
+        return 1
+    else:
+        return 2
 def run_training_attrs():
     train_attr1()
     train_attr2()
@@ -271,6 +242,7 @@ def run_training_attrs():
     train_attr14()
     train_attr15()
     if winning_team() == 1:
+
         train_team_1_list.append(1)
         train_team_2_list.append(0)
     else:
@@ -286,12 +258,8 @@ def prob_of_win():
 def prob_of_lose():
     return 0.5
 
-def getTeam1List():
-    return train_team_1_list
-def getTeam2List():
-    return train_team_2_list
-
 def bulk():
+    #teamname = "MASTER"
     team = 'fulltrainingdata.csv'
 
     list = main.masterlist()
@@ -306,16 +274,13 @@ def bulk():
             each_stat = td_tag.text
             train_stats.append(each_stat)
             stat = [x.replace('\t', '').replace('\n', '') for x in train_stats]
-        #print(stat)
+        print(stat)
         run_training_attrs()
 
-        getTeam1List()
-        getTeam2List()
         appendCSV(team)
         del train_stats[:]
         del train_team_1_list[:]
         del train_team_2_list[:]
-        #del stat[:]
-
+        del stat[:]
 
 #bulk()

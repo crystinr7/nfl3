@@ -39,7 +39,7 @@ def p_x_y(attr, team):
         not_p_x_y = notxgivenwin / numOfGames
         not_p_not_x_y = notxgivenloss / numOfGames
 
-    return p_x_y, p_not_x_y
+    return p_x_y, p_not_x_y#p_not_x_y
 
 def prob_of_win(team):
     numOfGames = len(main.list(team))
@@ -100,62 +100,34 @@ def prob_of_win(team):
 def append_csv():
     team1 = main.teamname1()
     prob_of_win(team=team1)
-    for i in range(numOfAttrs):
-        givenwin.append(p_x_y(i, team1)[0])
-    givenwin.append(prob_of_win(team1))
-        #givenloss.append(p_x_y(i)[1])
     with open(team1 + "data.csv", "a") as f:
 
+
+        for i in range(numOfAttrs):
+            givenwin.append(p_x_y(i, team1)[0])
+        givenwin.append(prob_of_win(team1))
+        #givenloss.append(p_x_y(i)[1])
         wr = csv.writer(f)
         wr.writerow(givenwin)
+
     team2 = main.teamname2()
-    prob_of_win(team=team1)
-    for i in range(numOfAttrs):
-        givenwin.append(p_x_y(i, team2)[0])
-    givenwin.append(prob_of_win(team2))
-        #givenloss.append(p_x_y(i)[1])
+    prob_of_win(team=team2)
+
+    del givenwin[:]
     with open(team2 + "data.csv", "a") as f:
 
+
+        for i in range(numOfAttrs):
+            givenwin.append(p_x_y(i, team2)[0])
+        givenwin.append(prob_of_win(team2))
         wr = csv.writer(f)
         wr.writerow(givenwin)
+        # givenloss.append(p_x_y(i)[1])
     #test.compareAttrs()
 def bulk():
     append_csv()
-"""def train():
-    answer = []
 
-    for i in range(numOfAttrs):
-        givenwin.append(p_x_y(i)[0])
-        givenloss.append(p_x_y(i)[1])
-
-    prob_win = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, givenwin) * prob_of_win()
-    prob_loss = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, givenloss) * prob_of_lose()
-    #print(prob_win)
-    #print(prob_loss)
-    answer.append(prob_win)
-    answer.append(prob_loss)
-    print(answer)
-    #if max(answer) == answer[0]:
-        #print("Probabily going to win")
-    #else:
-       # print("Probabily going to lose")
-
-    with open(main.teamname() + "data.csv", "a") as f:
-        wr = csv.writer(f)
-        wr.writerow(answer)
-    with open(main.teamname()+'data.csv', 'r') as csvfile:
-        next(csvfile)
-        read = csv.reader(csvfile, delimiter=' ', quotechar=',')
-        for row in read:
-            #print(row[-1])
-            for word in row:
-
-                word = word.split(",")
-        print("Probability of lose: ", word[-1])
-        print("Probability of win: ", word[-2])
-
-train()"""
-
+#bulk()
 """ We want to grab all data for the season and then put it into a naive bayes testing set from there we analyze
 the boosting algorithm. From there we can think about using that algorithm for e=stiment alalysis and see which 
 answer is best. """

@@ -18,7 +18,6 @@ def compareAttrs():
     openCSV(main.teamname2())
 
 
-
 def openCSV(team):
     with open(team + 'data.csv', 'r') as csvfile:
         next(csvfile)
@@ -39,10 +38,11 @@ def openCSV(team):
         del last_line[:]
 
 
-#print(team1List)
-#print(team2List)
+
 
 def attrCompare():
+    #print(team1List)
+    #print((team2List))
     for item in range(len(team1List)):
         if team1List[item] > team2List[item]:
             findAName.append(1)
@@ -50,7 +50,7 @@ def attrCompare():
             findAName.append(0)
         else:
             findAName.append(2)
-
+    #print(findAName)
 #print(findAName)
 #print(findAName)
 
@@ -61,52 +61,77 @@ def win_team2():
     return team2List[-1]
 
 def results():
-    float_t1_List = [float(i) for i in team1List]
-    float_t2_List = [float(i) for i in team2List]
-
+    #print(team1List)
+    #print(team2List)
+    #float_t1_List = [float(i) for i in team1List]
+    #float_t2_List = [float(i) for i in team2List]
+    team1_prob = float(team1List[-1])
+    team2_prob = float(team2List[-1])
+    #print(team1_prob)
     #result = np.prod(np.array(mylist))
-    prob_t1 = np.prod(np.array(finalAttributeNumsT1)) * float_t1_List[-1]
-    prob_t2 = np.prod(np.array(finalAttributeNumsT1)) * float_t2_List[-1]
-    #prob_t1 = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, finalAttributeNumsT1) * win_team1()
-    #prob_t2 = functools.reduce(lambda x, y: x * y if y != 0 and x != 0 else 0.1, finalAttributeNumsT2) * win_team2()
+    prob_t1 = np.prod(np.array(finalAttributeNumsT1)) * team1_prob
+    prob_t2 = np.prod(np.array(finalAttributeNumsT2)) * team2_prob
 
-    t1 = format(prob_t1, '.8f')
+    t1 = format(prob_t1, '.10f')
     answer.append(t1)
 
-    t2 = format(prob_t2, '.8f')
+    t2 = format(prob_t2, '.10f')
     answer.append(t2)
     #print(answer)
 
 
 
 def final_answer():
+    print(answer[0], main.teamname1(), answer[1], main.teamname2())
+    if abs(float(answer[0]) - float(answer[1])) > 0.001:
+        print("Game should have at least ten point spread!")
     if answer[0] > answer[1]:
         print("Team : ", main.teamname1(), " should win!")
+
     else:
         print("Team : ", main.teamname2(), " should win!")
 
+def call_x_ys(num):
+    dataset = "fulltrainingdata.csv"
+    probs_of_X_Y_from_training_set = train.getxgivenwin(dataset)
+    probs_of_win_from_training_set = probs_of_X_Y_from_training_set[0]
+    probs_of_lose_from_training_set = probs_of_X_Y_from_training_set[1]
+    #print(probs_of_win_from_training_set)
+    #print(probs_of_lose_from_training_set)
+    #dataset1 = main.teamname1()+"data.csv"
+    #dataset2 = main.teamname2()+"data.csv"
+    #x1 = train.getxgivenwin(dataset1)
+    #x2 = train.getxgivenwin(dataset2)
+    #x_y_1 = x1[0]
+    #n_x_y_1 = x1[1]
+    #x_y_2 = x2[0]
+    #n_x_y_2 = x2[1]
+    #x_y = train.xgivenwin
+    #n_x_y = train.notxgivenwin
+
+
+    # print(team1List[-1])
+    # print(team2List[-1])
+    #print(findAName)
+    for i in range(num):
+        ####I beleive you have to add not x_y_1 but the possiblility it leads to a win vs not a win
+        if findAName[i] == 1:
+            finalAttributeNumsT1.append(probs_of_win_from_training_set[i])
+            finalAttributeNumsT2.append(0.2)
+        elif findAName[i] == 2:
+            finalAttributeNumsT1.append(0.2)
+            finalAttributeNumsT2.append(probs_of_win_from_training_set[i])
+        else:
+            pass
+    #print(finalAttributeNumsT1)
+    #print(finalAttributeNumsT2)
+    return finalAttributeNumsT1, finalAttributeNumsT2
 
 def bulk():
     compareAttrs()
     attrCompare()
     numOfAttrs = 15
-    x_y = train.xgivenwin
-    n_x_y = train.notxgivenwin
-    # print(x_y)
-    # print(n_x_y)
-
-    # print(team1List[-1])
-    # print(team2List[-1])
-    for i in range(numOfAttrs):
-
-        if findAName[i] == 1:
-            finalAttributeNumsT1.append(x_y[i])
-            finalAttributeNumsT2.append(n_x_y[i])
-        elif findAName[i] == 2:
-            finalAttributeNumsT1.append(x_y[i])
-            finalAttributeNumsT2.append(n_x_y[i])
-        else:
-            pass
+    call_x_ys(numOfAttrs)
     results()
     final_answer()
 #bulk()
