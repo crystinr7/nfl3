@@ -7,19 +7,13 @@ import featureSelection
 
 
 def startwithoutdataset():
-    #teamname1()
-    # MAYBE SWITCH the order
-
 
     grabAttributes.bulk()
-    #teamname2()
-    #grabAttributes.bulk()
     analyzeAndTrain.bulk()
 
-    print("BEFORE FEATURE SELECTION: ")
+    print("NAIVE BAYES: ")
     test.bulk()
-    #printFullDataSet.bulk()
-    print("AFTER FEATURE SELECTION: ")
+    print("WITH FEATURE SELECTION: ")
     featureSelection.bulk2()
 
 startwithoutdataset()

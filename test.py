@@ -72,10 +72,10 @@ def results():
     prob_t1 = np.prod(np.array(finalAttributeNumsT1)) * team1_prob
     prob_t2 = np.prod(np.array(finalAttributeNumsT2)) * team2_prob
 
-    t1 = format(prob_t1, '.10f')
+    t1 = format(prob_t1, '.20f')
     answer.append(t1)
 
-    t2 = format(prob_t2, '.10f')
+    t2 = format(prob_t2, '.20f')
     answer.append(t2)
     #print(answer)
 
@@ -83,7 +83,12 @@ def results():
 
 def final_answer():
     print(answer[0], main.teamname1(), answer[1], main.teamname2())
-    if abs(float(answer[0]) - float(answer[1])) > 0.001:
+    for item in answer:
+        if item == 0:
+            answer[item] = 0.0000000001
+    #print(abs(float(answer[0]) / float(answer[1])))
+    #print(abs(float(answer[1]) / float(answer[0])))
+    if abs(float(answer[0]) / float(answer[1])) or abs(float(answer[1]) / float(answer[0])) > 5:
         print("Game should have at least ten point spread!")
     if answer[0] > answer[1]:
         print("Team : ", main.teamname1(), " should win!")

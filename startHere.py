@@ -4,7 +4,7 @@ import analyzeAndTrain
 import train
 import test
 import printFullDataSet
-
+import featureSelection
 
 def startwithoutdataset():
     #teamname1()
@@ -19,7 +19,7 @@ def startwithoutdataset():
     print("BEFORE FEATURE SELECTION: ")
     test.bulk()
     printFullDataSet.bulk()
-    print("AFTER FEATURE SELECTION: ")
-    #featureSelection.bulk2()
+
+    featureSelection.bulk2()
 
 startwithoutdataset()

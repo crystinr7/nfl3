@@ -7,12 +7,8 @@ Next, we need to add boosting algorithm into the final project therefore we need
 
 
 Next, see if we can use this to help determine sentiment analysis.
+ OR
 
-DO we add it into feature selection. OR
-probability that this tag relates to the information given
 Or
 Whats the probability that information pertains to outcome of game? AKA Injury, weather, etc
 
-
-// Want to add a training set which checks all matches out comes
-// Tst is with the team only

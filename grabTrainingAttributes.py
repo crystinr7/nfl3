@@ -59,7 +59,7 @@ def train_attr1():
     # Grabs first quarter points
 
     if float(train_stats[1]) > float(train_stats[7]):
-        print(train_stats)
+        #print(train_stats)
         train_team_1_list.append(1)
         train_team_2_list.append(0)
 
@@ -306,7 +306,7 @@ def bulk():
             each_stat = td_tag.text
             train_stats.append(each_stat)
             stat = [x.replace('\t', '').replace('\n', '') for x in train_stats]
-        #print(stat)
+        print(stat)
         run_training_attrs()
 
         getTeam1List()
@@ -315,7 +315,7 @@ def bulk():
         del train_stats[:]
         del train_team_1_list[:]
         del train_team_2_list[:]
-        #del stat[:]
+        del stat[:]
 
 
 #bulk()

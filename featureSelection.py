@@ -3,8 +3,10 @@ import numpy as np
 from pandas import read_csv
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import ExtraTreesClassifier
 import main
 import train
+
 # load data
 team1ListW_FS = []
 team2ListW_FS = []
@@ -18,6 +20,8 @@ numOfFeatures = 8
 percentagelist1 = []
 percentagelist2 = []
 indexOfTopFeatures = []
+feature_importance1 = []
+feature_importance2 = []
 xy1list = []
 xy2list = []
 newxy1list = []
@@ -28,11 +32,12 @@ finalAttributeNumsT2W_WF = []
 indices = []
 
 def bulk2():
-    url = "/Users/crystinrodrick/PycharmProjects/nfl3/fulltrainingdata.csv"
+    print("WITH FEATURE SELECTION: ")
+    csvfull = "/Users/crystinrodrick/PycharmProjects/nfl3/fulltrainingdata.csv"
     #names = ['attr1', 'attr2', 'attr3', 'attr4', 'attr5', 'attr6', 'attr7', 'attr8', 'attr9', 'attr10',
     #         'attr11', 'attr12', 'attr13', 'attr14', 'attr15', 'class']
     names = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "class"]
-    dataframe = read_csv(url, names=names)
+    dataframe = read_csv(csvfull, names=names)
     array = dataframe.values
     X = array[:,0:15]
     Y = array[:,15]
@@ -58,7 +63,7 @@ def analyzeFS():
     y = train.getxgivenwin("trainingdata2.csv")
     for item in y:
         xy2list.append(item)
-    team1 = xy2list[0]
+    #team1 = xy2list[0]
     team2 = xy2list[1]
     splitteam1 = []
     splitteam2 = []
@@ -79,7 +84,8 @@ def analyzeFS():
 
     for item in top_features:
         x = int(item)
-        indexOfTopFeatures.append(x) #For future call in weighted features
+        indexOfTopFeatures.append(x)
+        #For future call in weighted features
 
         percentagelist1.append(newxy1list[x])
         percentagelist2.append(newxy2list[x])
@@ -97,7 +103,7 @@ def analyzeFS():
             findANameW_FS.append(2)
     ones_indexes = all_indices(1, findANameW_FS)
 
-    #print(ones_indexes)
+
     for i in ones_indexes:
         finalAttributeNumsT1W_FS.append(train.xgivenwin[i])
 
@@ -114,6 +120,9 @@ def analyzeFS():
     analyzeWF()
     results3(team1ListW_FS, team2ListW_FS)
     final_answer2()
+    #featureImportance()
+    #results4(team1ListW_FS, team2ListW_FS)
+    #final_answer2()
 def all_indices(value, list):
 
     idx = -1
@@ -155,10 +164,10 @@ def results2(list1, list2, finalAttrs1, finalAttrs2):
     prob_t1 = np.prod(np.array(finalAttrs1)) * float_t1_List[-1]
     prob_t2 = np.prod(np.array(finalAttrs2)) * float_t2_List[-1]
 
-    t1 = format(prob_t1, '.8f')
+    t1 = format(prob_t1, '.20f')
     new_answer.append(t1)
 
-    t2 = format(prob_t2, '.8f')
+    t2 = format(prob_t2, '.20f')
     new_answer.append(t2)
     del float_t1_List[:]
     del float_t2_List[:]
@@ -175,42 +184,15 @@ def results3(list1, list2):
     prob_t1 = np.prod(np.array(finalAttributeNumsT1W_WF)) * float_t1_List[-1]
     prob_t2 = np.prod(np.array(finalAttributeNumsT2W_WF)) * float_t2_List[-1]
 
-    t1 = format(prob_t1, '.10f')
+    t1 = format(prob_t1, '.20f')
     new_answer.append(t1)
 
-    t2 = format(prob_t2, '.10f')
+    t2 = format(prob_t2, '.20f')
     new_answer.append(t2)
-
+    #print(newxy1list, newxy2list)
+    return newxy1list, newxy2list
 def analyzeWF():
-    """
-    for item in top_features:
-        x = int(item)
-        indexOfTopFeatures.append(x) #For future call in weighted features
 
-        percentagelist1.append(newxy1list[x])
-        percentagelist2.append(newxy2list[x])
-
-   
-
-    # NOW we are going to compare the two selected list
-
-    for item in range(numOfFeatures):
-        if percentagelist1[item] > percentagelist2[item]:
-            findANameW_FS.append(1)
-        elif percentagelist1[item] == percentagelist2[item]:
-            findANameW_FS.append(0)
-        else:
-            findANameW_FS.append(2)
-    ones_indexes = all_indices(1, findANameW_FS)
-
-    #print(ones_indexes)
-    for i in ones_indexes:
-        finalAttributeNumsT1W_FS.append(train.xgivenwin[i])
-
-    del indices[:]
-    twos_indexes = all_indices(2, findANameW_FS)
-    for i in twos_indexes:
-        finalAttributeNumsT2W_FS.append(train.xgivenwin[i*2])"""
     # The answer is not correct because it needs to add the followin line in oder for team swap to work
 
     x = train.getxgivenwin("trainingdata1.csv")
@@ -264,12 +246,19 @@ def analyzeWF():
             finalAttributeNumsT2W_WF.append(weightedList2[i])
         else:
             pass
+
+    print("AFTER WEIGHTED FEATURES: ")
     return finalAttributeNumsT2W_FS
 
 
 def final_answer2():
     print(main.teamname1(), new_answer[0], main.teamname2(), new_answer[1])
-    if abs(float(new_answer[0]) - float(new_answer[1])) > 0.001:
+    for item in new_answer:
+        if item == 0:
+            new_answer[item] = 0.0000000001
+    #print(abs(float(new_answer[1]) / float(new_answer[0])))
+    if abs(float(new_answer[0]) / float(new_answer[1])) or float(new_answer[1]) / float(new_answer[0]) > 5:
+
         print("Game should have at least ten point spread!")
     if new_answer[0] > new_answer[1]:
         print("Team : ", main.teamname1(), " should win!")
@@ -284,13 +273,53 @@ weightedList1 = []
 weightedList2 = []
 beta = 1.3
 # We can change beta to see how it affect final result
+def results4(list1, list2):
+    float_t1_List = [float(i) for i in list1]
+    float_t2_List = [float(i) for i in list2]
+    #print(finalAttributeNumsT1W_WF)
+    #print(feature_importance1)
+    prob_t1 = np.prod(np.array(feature_importance1)) * float_t1_List[-1]
+    prob_t2 = np.prod(np.array(feature_importance2)) * float_t2_List[-1]
 
+    t1 = format(prob_t1, '.40f')
+    new_answer.append(t1)
 
+    t2 = format(prob_t2, '.40f')
+    new_answer.append(t2)
+    print("WITH FEATURE IMPORTANCE: ")
+    return newxy1list, newxy2list
+
+def featureImportance():
+    csvfull = "/Users/crystinrodrick/PycharmProjects/nfl3/fulltrainingdata.csv"
+    names = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "class"]
+    dataframe = read_csv(csvfull, names=names)
+    array = dataframe.values
+    X = array[:, 0:15]
+    Y = array[:, 15]
+    # feature extraction
+    model = ExtraTreesClassifier()
+    model.fit(X, Y)
+    x = model.feature_importances_
+
+    #print(findANameW_WF)
+
+    beta = 1.3
+    for i in findANameW_WF:
+        if findANameW_WF[i] == 1:
+            feature_importance1.append(x[i]* beta)
+            feature_importance2.append(0.02)
+        if findANameW_WF[i] == 2:
+            feature_importance1.append(0.02)
+            feature_importance2.append(x[i]*beta)
+        else:
+            feature_importance1.append(0.02)
+            feature_importance2.append(0.02)
+
+    #print(feature_importance1)
+    #print(feature_importance2)
+    return feature_importance1, feature_importance2
 
 
 #print(weightedList1)
 
 #bulk2()
-#print(percentagelist1)
-
-#print(weightedList1)
